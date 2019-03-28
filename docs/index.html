@@ -1,0 +1,79 @@
+<!doctype html>
+<html ng-app="varsApp" lang="en" ng-controller="varsController">
+	<head>
+		<meta charset="UTF-8">
+		<title>VARS Demo</title>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/angular.min.js"></script>
+	</head>
+	<body  ng-click="highlightedToken = -1">
+        <table>
+            <tr>
+                <td>Number of tokens:</td>
+                <td><input type="text" ng-model="vars_config.n_tokens" style="width:150px;"></td>
+            </tr>
+            <tr>
+                <td>Max arity:</td>
+                <td><input type="text" ng-model="vars_config.max_arity" style="width:150px;"></td>
+            </tr>
+            <tr>
+                <td>Vocabulary:</td>
+                <td>
+                    <select ng-model="new_encoder">
+                        <option value="distributed">Random Distributed 20d</option>                    
+                        <option value="localist">Random Localist 30d</option>      
+                        <!--not available by github-->                  
+                        <!--<option value="glove">Glove Distributed 50d</option>-->
+                    </select>
+                </td>
+            </tr>                        
+        </table>
+        <BR><BR>
+        <select ng-model="selectedProposition" ng-options="p.description for p in propositions">
+            <option value="">Select a proposition to encode</option>
+        </select>
+        <input ng-if = "selectedProposition" type="button" ng-click="populateSTM()" value="Encode"/>
+        <BR><BR>
+        <table border="0" cellpadding="5" cellspacing="0">
+            <tr>
+                <th>Token</th>
+                <th>&nbsp;</th>
+                <th>Symbols</th>
+                <th ng-repeat="a in range(0, vars_config.max_arity)">A {{a + 1}}</th>
+            </tr>
+            <tr ng-repeat="token in range(0, vars_config.n_tokens)" ng-style="getTokenStyle($index)">
+                <td align="center"><b>{{token + 1}}</b></td>
+                <td align="center"><b>{{stm[token].id}}</b></td>
+                <td>
+                    <div ng-attr-title='{{vars.semantics[token][$index]}}' ng-repeat="s in vars.semantics[token] track by $index" ng-style="getUnitStyle(vars.semantics[token][$index], true, true)">                    
+                    </div>
+                </td>
+                <td align="center" ng-repeat="a in range(0, vars_config.max_arity)">
+                    <div ng-click="highlightToken($event, a, $index, vars.structure[token][a][$index])" ng-attr-title='{{vars.structure[token][a][$index]}}' ng-repeat="k in vars.structure[token][a] track by $index"  ng-style="getUnitStyle(vars.structure[token][a][$index], true, false)">
+                    </div>                
+                </td>
+            </tr>
+        </table>
+
+
+		<!-- Fixed window with trainee standard progress, used in trainee interface, lots of iff's -->
+        <script src="app.js"></script>
+		<script src="js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+        <script src="js/angular-route.min.js"></script>
+		<script src="js/angular-cookies.min.js"></script>
+		<script src="js/angular-smooth-scroll.min.js"></script>
+		<script src="js/angular-filter.min.js"></script>
+		<script src="js/angular-rzslider.min.js"></script>
+		<script src="js/angular-confirm.min.js"></script>
+		<script src="js/chart.min.js"></script>
+		<script src="js/angular-chart.min.js"></script>
+		<script src="js/chart.piecelabel.min.js"></script>
+		<script src="js/angularjs-gauge.min.js"></script>
+		<script src="js/angular-bootstrap-calendar-tpls.min.js"></script>
+		<script src="js/angular-sortable.min.js"></script>
+		<script src="js/angular-animate.min.js"></script>
+		<script src="js/angular-sanitize.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-chart/1.0.0-beta.1/ng-google-chart.js" type="text/javascript"></script>
+
+	</body>
+</html>
